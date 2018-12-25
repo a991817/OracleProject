@@ -1,4 +1,6 @@
-1.Èı¸ösqlÎÄ¼ş±íÊ¾Èı¸ö±í
-	ÏÈÔËĞĞcourse.sql,student.sql,ÔÙÔËĞĞscore.sql
-2.Êı¾İ¿âĞÅÏ¢ÔÚsrc/config/db.propertiesÎÄ¼şÖĞÅäÖÃ¡£
-3.Ò»¿ªÊ¼ÊäÈëÍøÖ·£ºhttp://localhost:8080/OracleProject/studentList.action
+1.ä¸‰ä¸ªsqlæ–‡ä»¶è¡¨ç¤ºä¸‰ä¸ªè¡¨
+	å…ˆè¿è¡Œcourse.sql,student.sql,å†è¿è¡Œscore.sql
+2.æ•°æ®åº“ä¿¡æ¯åœ¨src/config/db.propertiesæ–‡ä»¶ä¸­é…ç½®ã€‚
+3.ä¸€å¼€å§‹è¾“å…¥ç½‘å€ï¼šhttp://localhost:8080/OracleProject/studentList.action
+4.ç®¡ç†å‘˜ç”¨æˆ·ï¼šroot,å¯†ç :root
+  å­¦ç”Ÿç”¨æˆ·  å­¦å·:1001  å¯†ç 123
