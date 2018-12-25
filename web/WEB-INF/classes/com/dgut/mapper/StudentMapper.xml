@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dgut.mapper.StudentMapper" >
+
+    <select id="getStudentList" parameterType="com.dgut.po.Student" resultType="com.dgut.po.Student">
+        SELECT * from STUDENT
+        <where>
+                <if test="sname!=null and sname!=''">
+                    and SNAME like concat(concat('%',#{sname}),'%')
+                </if>
+                <if test="sno!=null and sno!=''">
+                    and SNO='${sno}'
+                </if>
+                <if test="ssex!=null and ssex!=''">
+                    and SSEX = '${ssex}'
+                </if>
+        </where>
+    </select>
+
+    <select id="getStudentByNo" parameterType="int" resultType="com.dgut.po.Student">
+        select * from STUDENT where sno=#{sno}
+    </select>
+
+    <insert id="insertStudent" parameterType="com.dgut.po.Student">
+        insert into STUDENT(SNO,SNAME,SSEX,SBIRTHDAY,SPECIALITY,SCLASS,TC)
+        values(#{sno},#{sname},#{ssex},to_date(to_char(#{sbirthday}, 'yyyy-MM-dd'),'yyyy-MM-dd'),#{speciality},#{sclass},#{tc})
+    </insert>
+
+    <delete id="deleteStudent" parameterType="int">
+        delete from STUDENT where SNO=#{sno}
+    </delete>
+
+    <update id="updateStudent" parameterType="com.dgut.po.Student">
+        update STUDENT SET SNAME=#{sname},SSEX=#{ssex},SBIRTHDAY=to_date(to_char(#{sbirthday}, 'yyyy-MM-dd'),'yyyy-MM-dd'),
+         SPECIALITY=#{speciality},SCLASS=#{sclass} where SNO=to_number(#{sno})
+    </update>
+
+    <select id="getPassword" parameterType="java.lang.String" resultType="java.lang.String">
+        select password from STUDENT where sno='${value}'
+    </select>
+
+    <select id="getMaxSno" resultType="java.lang.String">
+        select MAX(SNO) from STUDENT
+    </select>
+
+    <update id="changePassword" parameterType="com.dgut.po.StudentExtend">
+        update STUDENT SET PASSWORD='${password}'
+        where SNO=to_number(#{student.sno})
+    </update>
+
+
+
+
+
+
+</mapper>

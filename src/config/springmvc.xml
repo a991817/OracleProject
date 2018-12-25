@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/mvc
+                http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+   <!--逐渐扫描，扫描Handler-->
+    <context:component-scan base-package="com.dgut.controller"></context:component-scan>
+
+    <!--配置注解映射器和适配器-->
+    <mvc:annotation-driven validator="validator">
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!--以下的处理器映射器和处理器适配器由上面那个鬼东西代替了，所以就不用了-->
+    <!--&lt;!&ndash;处理器映射器&ndash;&gt;-->
+    <!--<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"></bean>-->
+    <!--&lt;!&ndash;处理器适配器&ndash;&gt;-->
+    <!--<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>-->
+
+    <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--校验器-->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <!--hibernate校验器-->
+        <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
+        <!--不设置则默认为classpath下的ValidationMessages.properties -->
+        <property name="validationMessageSource" ref="validatemessageSource"/>
+    </bean>
+
+    <!--校验错误信息配置文件-->
+    <bean id="validatemessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <!--资源文件名，因为是basename，所以不用在文件名后面加.properties-->
+        <property name="basenames" value="config.Validatemessages"/>
+        <!--资源文件编码格式-->
+        <property name="fileEncodings" value="utf-8"/>
+        <!--对资源文件内容缓存时间，单位秒-->
+        <property name="cacheSeconds" value="120"/>
+    </bean>
+
+    <!--
+    全局异常处理器
+    只要实现了HandlerExceptionResolver借口，那它就是全局异常处理器，全局只有一个
+    -->
+    <bean class="com.dgut.exception.GlobalExceptionResolver"></bean>
+    <!--拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.dgut.interceptor.loginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+
+
+</beans>

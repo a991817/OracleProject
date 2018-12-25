@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dgut.mapper.CourseMapper" >
+    <select id="getCourseList" resultType="com.dgut.po.Course" parameterType="com.dgut.po.Course">
+        select * from COURSE
+        <where>
+            <if test="cname!=null and cname!=''">
+                and CNAME like concat(concat('%',#{cname}),'%')
+            </if>
+            <if test="tno!=null and tno!=''">
+                and TNO='${tno}'
+            </if>
+        </where>
+    </select>
+
+    <select id="getCourseByCno" parameterType="java.lang.String" resultType="com.dgut.po.Course">
+        select * from COURSE where CNO = '${value}'
+    </select>
+
+    <insert id="insertCourse" parameterType="com.dgut.po.CourseExtend">
+          insert into COURSE(CNO,CNAME,CREDIT,TNO)
+          values(#{cno},#{cname},#{credit},#{tno})
+    </insert>
+
+    <update id="updateCourse" parameterType="com.dgut.po.CourseExtend">
+         update COURSE SET CNO=#{cno},CNAME=#{cname},CREDIT=#{credit},TNO=#{tno} where CNO='${cno}'
+    </update>
+
+    <delete id="deleteCourse" parameterType="java.lang.String">
+        delete from COURSE where CNO='${value}'
+    </delete>
+
+    <select id="getAllCno" resultType="java.lang.String">
+        select CNO from COURSE
+    </select>
+
+    <select id="getUnSelectedCourse" parameterType="int" resultType="com.dgut.po.Course">
+        select *
+        from course
+        where cno not in(
+            select course.cno
+            from course,score
+            where course.cno=score.cno and score.sno=to_number(#{value})
+            )
+    </select>
+
+    <select id="getSelectedCourse" parameterType="int" resultType="com.dgut.po.Course">
+        select course.cno,course.cname,course.credit,course.tno
+        from course,score
+        where course.cno=score.cno and score.sno=to_number(#{value})
+    </select>
+
+</mapper>

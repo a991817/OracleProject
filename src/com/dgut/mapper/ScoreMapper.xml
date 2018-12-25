@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dgut.mapper.ScoreMapper" >
+    <select id="scoreList" resultType="com.dgut.po.ScoreExtend" parameterType="com.dgut.po.ScoreExtend">
+        select COURSE.CNAME,COURSE.CNO,STUDENT.SNO,STUDENT.SNAME,score.score
+        from SCORE,COURSE,STUDENT
+--         where SCORE.CNO=COURSE.CNO and SCORE.SNO=STUDENT.SNO
+        <where>
+            <if test="1==1">
+                and SCORE.CNO=COURSE.CNO and SCORE.SNO=STUDENT.SNO
+            </if>
+            <if test="cname!=null and cname!=''">
+                and CNAME like concat(concat('%',#{cname}),'%')
+            </if>
+            <if test="sname!=null and sname!=''">
+                and SNAME like concat(concat('%',#{sname}),'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getScoreInfoByCS" parameterType="com.dgut.po.ScoreExtend" resultType="com.dgut.po.ScoreExtend">
+        select COURSE.CNO,COURSE.CNAME,STUDENT.SNO,STUDENT.SNAME,score.score
+        from SCORE,COURSE,STUDENT
+        where SCORE.CNO=COURSE.CNO and SCORE.SNO=STUDENT.SNO and COURSE.CNO='${cno}' and STUDENT.SNO='${sno}'
+    </select>
+
+    <update id="updateScoreByCS" parameterType="com.dgut.po.ScoreExtend">
+        update SCORE set SCORE=${score} where CNO='${cno}' AND SNO='${sno}'
+    </update>
+
+    <insert id="selectCourse" parameterType="com.dgut.po.Score">
+        insert into SCORE(CNO,SNO) values('${cno}','${sno}')
+    </insert>
+
+    <select id="getScoreInfoBySno" parameterType="java.lang.String" resultType="com.dgut.vo.ScoreVo" >
+        select COURSE.cname,COURSE.credit,SCORE.score
+        from COURSE,SCORE
+        where COURSE.CNO=SCORE.CNO AND SCORE.SNO='${value}'
+    </select>
+
+    <update id="updateTC" parameterType="com.dgut.vo.UpdateTcVo">
+        update STUDENT set TC='${tc}'
+        where SNO='${sno}'
+    </update>
+
+    <select id="selectAllScore" parameterType="java.lang.String" resultType="com.dgut.vo.ScoreVo">
+        select SCORE.SNO,SCORE.CNO,COURSE.credit,SCORE.score
+        from COURSE,SCORE
+        where SCORE.CNO=COURSE.CNO AND SCORE.SNO='${value}'
+    </select>
+
+    <select id="selectAllSno" resultType="java.lang.String">
+        select sno
+        from STUDENT
+    </select>
+
+
+
+
+
+</mapper>
