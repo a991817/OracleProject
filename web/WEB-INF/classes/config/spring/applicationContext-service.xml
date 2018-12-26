@@ -22,4 +22,6 @@
 
     <bean id="ScoreService" class="com.dgut.service.Impl.ScoreServiceImpl"/>
 
+    <bean id="TeacherService" class="com.dgut.service.Impl.TeacherServiceImpl"/>
+
 </beans>

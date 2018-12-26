@@ -21,4 +21,6 @@ public interface ScoreService {
     public void updateAllTC();
     //更新一个学生的总学分
     public void updateTc(String sno);
+    //判断有没有该课程的成绩，（用于删除）
+    public boolean isFk(String cno);
 }

@@ -54,6 +54,11 @@
         from STUDENT
     </select>
 
+    <select id="selectScoreByCno" parameterType="java.lang.String" resultType="com.dgut.po.Score">
+        select * from SCORE
+        where CNO='${value}'
+    </select>
+
 
 
 

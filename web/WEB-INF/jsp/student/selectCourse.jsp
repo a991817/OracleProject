@@ -102,7 +102,7 @@
                                     <td>课程编号</td>
                                     <td>课程名称</td>
                                     <td>学分</td>
-                                    <td>教师编号</td>
+                                    <td>教师姓名</td>
                                     <td>选择</td>
                                 </tr>
                                 <c:forEach varStatus="i" var="selectCourseVo" items="${pager.dataList}">
@@ -110,7 +110,7 @@
                                         <td>${selectCourseVo.course.cno}</td>
                                         <td>${selectCourseVo.course.cname}</td>
                                         <td>${selectCourseVo.course.credit}</td>
-                                        <td>${selectCourseVo.course.tno}</td>
+                                        <td>${selectCourseVo.tname}</td>
                                         <td value="${selectCourseVo.course.cno}">
                                             <c:if test="${selectCourseVo.selected}">
                                                 已选

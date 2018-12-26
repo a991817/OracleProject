@@ -1,5 +1,6 @@
 package com.dgut.controller;
 
+import com.dgut.exception.GlobalException;
 import com.dgut.po.Course;
 import com.dgut.po.Pager;
 import com.dgut.po.Score;
@@ -75,6 +76,7 @@ public class ScoreController {
         modelAndView.setViewName("/student/scoreInfo");
         return modelAndView;
     }
+
 
 
 

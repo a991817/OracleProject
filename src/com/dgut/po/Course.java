@@ -5,12 +5,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class Course {
-    //非空校验
-    @Size(min = 1,max = 3,message = "{course.cno.error}")
     private String cno;
-    @Size(min = 1,max = 10,message = "{course.cname.error}")
     private String cname;
-    @DecimalMin(value = "1")
     private String credit;
     private String tno;
 

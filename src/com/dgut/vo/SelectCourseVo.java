@@ -1,11 +1,21 @@
 package com.dgut.vo;
 
 import com.dgut.po.Course;
+import com.dgut.po.Teacher;
 
 public class SelectCourseVo{
     private Course course;
     private int sno;
+    private String tname ;
     private boolean selected;
+
+    public String getTname() {
+        return tname;
+    }
+
+    public void setTname(String tname) {
+        this.tname = tname;
+    }
 
     public Course getCourse() {
         return course;

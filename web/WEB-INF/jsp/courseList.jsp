@@ -22,10 +22,30 @@
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     %>
     <script type="text/javascript">
+        var flag = 0;
         $(function () {
             $("#courseListLi").addClass("current");
         });
-        function isConfirm() {
+        function isfk(cno){
+            $.ajax({
+                type: "GET",
+                url: "${pageContext.request.contextPath}/isFk.action",
+                contentType: "application/json;charset=UTF-8",//指定消息请求类型
+                data:'cno='+cno,
+                // dataType: "json",
+                success: function (data) {
+                    if(data.cno==-1){
+
+                        flag=0;
+                    }
+                    else {
+                        alert(5)
+                        flag=1;
+                    }
+                }
+            });
+        }
+        function isConfirm(cno) {
             if (confirm("确定删除该课程信息吗？")) {
                 return true;
             }
@@ -90,7 +110,7 @@
                         <form action="<%=basePath%>courseList.action?type=query">
                             课程名称：
                             <input type="text" name="cname" id="cname" style="width:120px">
-                            教师编号：
+                            教师姓名：
                             <input type="text" name="tno" id="tno" style="width:120px">
                             <input type="submit" value="查询">
                         </form>
@@ -100,7 +120,7 @@
                                     <td>课程编号</td>
                                     <td>课程名称</td>
                                     <td>学分</td>
-                                    <td>教师编号</td>
+                                    <td>教师姓名</td>
                                     <td>操作</td>
                                 </tr>
                                 <c:forEach var="course" items="${pager.dataList}">
@@ -112,7 +132,7 @@
                                         <td>
                                             <a href="<%=basePath%>updateCoursePage.action?cno=${course.cno}">修改</a>|
                                             <a href="<%=basePath%>deleteCourse.action?cno=${course.cno}"
-                                               onclick="return isConfirm()">删除</a>
+                                               onclick="return isConfirm('${course.cno}')">删除</a>
                                         </td>
                                     </tr>
                                 </c:forEach>

@@ -32,9 +32,6 @@
             if(!checkCredit()){
                 flag = false;
             }
-            if(!checkTno()){
-                flag = false;
-            }
             if(!flag){
                 alert("输入有误！");
                 return false;
@@ -79,23 +76,11 @@
             $("#creditSpan").css("color", "red");
             return false;
         }
-
-        function checkTno() {
-            var tno = $("#tno").val();
-            if (tno == null || tno == "") {
-                $("#tnoSpan").text("教师编号不能为空")
-                $("#tnoSpan").css("color", "red");
-                return false;
-            } else if (cname.length > 15 || cname.length < 3) {
-                $("#tnoSpan").text("教师编号长度的长度只能在3-15之间");
-                return false;
-            }
-            else {
-                $("#tnoSpan").text("正确");
-                $("#tnoSpan").css("color", "green");
-                return true;
-            }
+        function teacherNameChange() {
+            var tno = $("#teacherNameSelect").val();
+            $("#tno").val(tno)
         }
+
 
     </script>
 </head>
@@ -126,31 +111,40 @@
                         <form class="userForm" action="<%=basePath%>insertCourse.action"
                               onsubmit="return checkUpdateCourse();">
                             <p>
-                                <c:if test="${course.cno!=null}">
+                                <c:if test="${updateCourseVo.courseExtend.cno!=null}">
                                     <span>课程编号</span>
-                                    <input disabled="disabled" value="${course.cno}"/>
-                                    <input name="cno" hidden="hidden" value="${course.cno}"/>
+                                    <input disabled="disabled" value="${updateCourseVo.courseExtend.cno}"/>
+                                    <input name="cno" hidden="hidden" value="${updateCourseVo.courseExtend.cno}"/>
                                 </c:if>
                             </p>
                             <p>
                                 <span>课程名称</span>
-                                <input id="cname" name="cname" value="${course.cname}" maxlength="15" onblur="checkCname()"/>
+                                <input id="cname" name="cname" value="${updateCourseVo.courseExtend.cname}" maxlength="15" onblur="checkCname()"/>
                                 <span id="cnameSpan"></span>
                             </p>
                             <p>
                                 <span>学分</span>
-                                <input id="credit" type="number" maxlength="1" name="credit" value="${course.credit}"
+                                <input id="credit" type="number" maxlength="1" name="credit" value="${updateCourseVo.courseExtend.credit}"
                                        onblur="checkCredit()"oninput="if(value.length>1)value=value.slice(0,1)"
                                        placeholder="请输入1-5"/>
                                 <span id="creditSpan"></span>
                             </p>
                             <p>
-                                <span>教师编号</span>
-                                <input id="tno" name="tno" value="${course.tno}" maxlength="15" onblur="checkTno()"/>
-                                <span id="tnoSpan"></span>
+                                <%--<span>教师编号</span>--%>
+                                <%--<input id="tno" name="tno" value="${course.tno}" maxlength="15" onblur="checkTno()"/>--%>
+                                <%--<span id="tnoSpan"></span>--%>
+                                    <span>教师姓名</span>
+                                    <select id="teacherNameSelect" onchange="teacherNameChange()">
+                                        <option value="${updateCourseVo.courseExtend.tno}">${updateCourseVo.courseExtend.tname}</option>
+                                        <c:forEach items="${updateCourseVo.teachers}" var="teacher">
+                                            <c:if test="${teacher.tno!=updateCourseVo.courseExtend.tno}">
+                                                <option value="${teacher.tno}">${teacher.tname}</option>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                    <input id="tno" name="tno" value="${updateCourseVo.courseExtend.tno}" hidden="true"/>
                             </p>
                             <input type="submit" value="提交"/>
-
                         </form>
                     </section>
                 </article>
