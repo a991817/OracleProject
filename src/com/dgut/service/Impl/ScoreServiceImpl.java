@@ -64,4 +64,12 @@ public class ScoreServiceImpl implements ScoreService{
         scoreMapper.updateTC(updateTcVo);
     }
 
+    @Override
+    public boolean isFk(String cno) {
+        if(scoreMapper.selectScoreByCno(cno).size()>0){
+            return true;
+        }
+        return false;
+    }
+
 }

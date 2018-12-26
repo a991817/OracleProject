@@ -10,7 +10,7 @@ public interface CourseMapper {
     //获取所有课程信息
     public List<Course> getCourseList(Course course);
     //根据课程编号查找课程
-    public Course getCourseByCno(String cno);
+    public CourseExtend getCourseByCno(String cno);
     //增加一个课程
     public void insertCourse(CourseExtend courseExtend);
     //更新课程信息

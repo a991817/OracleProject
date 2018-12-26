@@ -16,7 +16,7 @@ public interface CourseService {
     //通过课程编号判断一个课程是否已经在数据库
     public boolean hasCourse(String cno);
     //根据课程编号返回一个课程对象
-    public Course getCourseByCno(String cno);
+    public CourseExtend getCourseByCno(String cno);
     //根据课程编号删除一个课程对象
     public void deleteCourseByCno(String cno);
     //根据学号获取该学生所有未选课的课程信息
@@ -25,5 +25,7 @@ public interface CourseService {
     public List<Course> getSelectedCourse(int sno);
     //获取选课vo列表
     public List<SelectCourseVo> getSelectCourseVos(int sno);
+    //把普通course对象，添加一个教师姓名的属性，返回CourseExtend对象
+    public List<CourseExtend> addTeacherName(List<Course> courses);
 
 }

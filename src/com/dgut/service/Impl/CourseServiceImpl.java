@@ -3,6 +3,7 @@ package com.dgut.service.Impl;
 import com.dgut.Util.ChangeToExtendUtil;
 import com.dgut.Util.StringUtil;
 import com.dgut.mapper.CourseMapper;
+import com.dgut.mapper.TeacherMapper;
 import com.dgut.po.Course;
 import com.dgut.po.CourseExtend;
 import com.dgut.vo.SelectCourseVo;
@@ -15,6 +16,8 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService{
     @Autowired
     CourseMapper courseMapper;
+    @Autowired
+    TeacherMapper teacherMapper;
 
     //返回所有课程信息
     @Override
@@ -53,7 +56,7 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Course getCourseByCno(String cno) {
+    public CourseExtend getCourseByCno(String cno) {
         return courseMapper.getCourseByCno(cno);
     }
 
@@ -79,6 +82,7 @@ public class CourseServiceImpl implements CourseService{
             selectCourseVo.setCourse(selectedCourse);
             selectCourseVo.setSelected(true);
             selectCourseVo.setSno(sno);
+            selectCourseVo.setTname(teacherMapper.getTeacherByTno(selectedCourse.getTno()));
             SelectCourseVos.add(selectCourseVo);
         }
         //获取所有未选课程,添加到vo列表，并且设置为未选
@@ -88,8 +92,27 @@ public class CourseServiceImpl implements CourseService{
             selectCourseVo.setCourse(UnSelectedCourse);
             selectCourseVo.setSelected(false);
             selectCourseVo.setSno(sno);
+            selectCourseVo.setTname(teacherMapper.getTeacherByTno(UnSelectedCourse.getTno()));
             SelectCourseVos.add(selectCourseVo);
         }
         return SelectCourseVos;
     }
+
+    @Override
+    public List<CourseExtend> addTeacherName(List<Course> courses) {
+        List<CourseExtend> courseExtends = new ArrayList<CourseExtend>();
+        String tname = null;
+        for(Course course:courses){
+            tname = teacherMapper.getTeacherByTno(course.getTno());
+            CourseExtend courseExtend = new CourseExtend();
+            courseExtend.setCno(course.getCno());
+            courseExtend.setCredit(course.getCredit());
+            courseExtend.setCname(course.getCname());
+            courseExtend.setTno(course.getTno());
+            courseExtend.setTname(tname);
+            courseExtends.add(courseExtend);
+        }
+        return courseExtends;
+    }
+
 }

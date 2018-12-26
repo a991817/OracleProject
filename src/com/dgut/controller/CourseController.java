@@ -2,11 +2,12 @@ package com.dgut.controller;
 
 import com.dgut.Util.StringUtil;
 import com.dgut.exception.GlobalException;
-import com.dgut.po.Course;
-import com.dgut.po.Pager;
-import com.dgut.po.Student;
+import com.dgut.po.*;
 import com.dgut.service.Impl.CourseService;
+import com.dgut.service.Impl.ScoreService;
+import com.dgut.service.Impl.TeacherService;
 import com.dgut.vo.SelectCourseVo;
+import com.dgut.vo.UpdateCourseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,10 @@ import java.util.List;
 public class CourseController {
     @Autowired
     private CourseService courseService ;
+    @Autowired
+    private TeacherService teacherService;
+    @Autowired
+    private ScoreService scoreService;
 
     @RequestMapping("/courseList")
     public ModelAndView courseList(Course course, String type,
@@ -48,13 +53,17 @@ public class CourseController {
     public ModelAndView updateCoursePage(@RequestParam(value = "cno",defaultValue="-1")String cno,
                                          HttpSession httpSession){
         ModelAndView modelAndView = new ModelAndView();
-        Course course = courseService.getCourseByCno(cno);
+        CourseExtend course = courseService.getCourseByCno(cno);
+        List<Teacher> teachers = teacherService.getAllTeacher();
+        UpdateCourseVo updateCourseVo = new UpdateCourseVo(course,teachers);
+
         //如果数据库有这个信息，则把它填到表格中
         if(course!=null){
             //保存要修改的课程编号到session
             httpSession.setAttribute("updateCourseCno",cno);
-            modelAndView.addObject("course",course);
+            modelAndView.addObject("updateCourseVo",updateCourseVo);
         }
+        modelAndView.addObject("updateCourseVo",updateCourseVo);
         modelAndView.setViewName("updateCourse");
         return modelAndView;
 
@@ -62,17 +71,9 @@ public class CourseController {
     //在需要校验的pojo前面添加@Validated，在后面加BindingResult bindingResult接受校验出错的信息
     //注意：@Validated和BindingResult bindingResult配对出现，并且位置固定（一前一后）
     @RequestMapping("/insertCourse")
-    public String insertCourse(@Validated Course course, BindingResult bindingResult,
+    public String insertCourse(Course course, BindingResult bindingResult,
                                HttpSession httpSession) throws GlobalException {
-        //获取校验错误信息
-        if(bindingResult.hasErrors()){
-            //输出错误信息
-            List<ObjectError> allErrors = bindingResult.getAllErrors();
-            for(ObjectError objectError:allErrors){
-                System.out.println(objectError.getDefaultMessage());
-            }
-            throw new GlobalException("输入有误!");
-        }
+
         //先把空格删了
         StringUtil.deleteSpace(course);
         //先看看数据库有没有这个课程，根据课程编号来判断；
@@ -90,11 +91,13 @@ public class CourseController {
     }
 
     @RequestMapping("/deleteCourse")
-    public String deleteCourse(String cno){
+    public String deleteCourse(String cno) throws GlobalException {
+        if(scoreService.isFk(cno)){
+            throw new GlobalException("该课程已有学生选课，不可删除");
+        }
         courseService.deleteCourseByCno(cno);
         return "redirect:courseList.action";
     }
-
     //student
     @RequestMapping("/s_courseList")
     public ModelAndView s_courseList(String type,

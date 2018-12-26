@@ -2,19 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dgut.mapper.CourseMapper" >
     <select id="getCourseList" resultType="com.dgut.po.Course" parameterType="com.dgut.po.Course">
-        select * from COURSE
+        select COURSE.CNO,COURSE.CNAME,COURSE.CREDIT,TEACHER.TNAME as TNO
+        from COURSE,TEACHER
         <where>
+            <if test="1==1">
+                and COURSE.TNO=TEACHER.TNO
+            </if>
             <if test="cname!=null and cname!=''">
                 and CNAME like concat(concat('%',#{cname}),'%')
             </if>
             <if test="tno!=null and tno!=''">
-                and TNO='${tno}'
+                and TEACHER.TNAME like concat(concat('%',#{tno}),'%')
             </if>
         </where>
     </select>
 
-    <select id="getCourseByCno" parameterType="java.lang.String" resultType="com.dgut.po.Course">
-        select * from COURSE where CNO = '${value}'
+    <select id="getCourseByCno" parameterType="java.lang.String" resultType="com.dgut.po.CourseExtend">
+        select COURSE.CNO,COURSE.CNAME,COURSE.CREDIT,COURSE.TNO,TEACHER.TNAME
+        from COURSE,TEACHER
+        <where>
+            <if test="1==1">
+                and COURSE.TNO=TEACHER.TNO
+            </if>
+            <if test="1==1">
+                and CNO = '${value}'
+            </if>
+        </where>
+
     </select>
 
     <insert id="insertCourse" parameterType="com.dgut.po.CourseExtend">
