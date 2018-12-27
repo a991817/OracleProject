@@ -66,7 +66,7 @@
                                 <p>生日：<fmt:formatDate value="${student.sbirthday}" pattern="yyyy-MM-dd"/></p>
                                 <p>性别：${student.ssex}</p>
                                 <p>专业：${student.speciality}</p>
-                                <p>班号：${student.sclass}</p>
+                                <p>班级：${student.sclassname}</p>
                                 <p>总学分：${student.tc}</p>
                         </section>
                     </article>

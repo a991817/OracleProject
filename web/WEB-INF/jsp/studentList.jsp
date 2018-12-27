@@ -25,6 +25,7 @@
     %>
 
     <script type="text/javascript">
+        //导航栏样式
         $(function () {
             $("#studentListLi").addClass("current");
         });
@@ -132,7 +133,7 @@
                                         <td>${student.speciality}</td>
                                         <td><fmt:formatDate value="${student.sbirthday}" pattern="yyyy-MM-dd"/></td>
                                         <td>${student.tc}</td>
-                                        <td>${student.sclass}</td>
+                                        <td>${student.sclassname}</td>
                                         <td>
                                             <a href="<%=basePath%>updateStudentPage.action?sno=${student.sno}">修改</a>|
                                             <a href="<%=basePath%>deleteStudent.action?sno=${student.sno}"
