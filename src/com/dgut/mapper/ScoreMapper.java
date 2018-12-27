@@ -26,4 +26,6 @@ public interface ScoreMapper {
     public List<String> selectAllSno();
     //判断有没有该课程的成绩，（用于删除）
     public List<Score> selectScoreByCno(String cno);
+    //根据学号删除所有成绩
+    public void deleteAllScoreBySno(String sno);
 }

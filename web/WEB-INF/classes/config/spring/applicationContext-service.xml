@@ -24,4 +24,6 @@
 
     <bean id="TeacherService" class="com.dgut.service.Impl.TeacherServiceImpl"/>
 
+    <bean id="ClassService" class="com.dgut.service.Impl.ClassServiceImpl"/>
+
 </beans>

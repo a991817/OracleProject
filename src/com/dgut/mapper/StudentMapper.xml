@@ -2,9 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dgut.mapper.StudentMapper" >
 
-    <select id="getStudentList" parameterType="com.dgut.po.Student" resultType="com.dgut.po.Student">
-        SELECT * from STUDENT
+    <select id="getStudentList" parameterType="com.dgut.po.Student" resultType="com.dgut.po.StudentCustom">
+        SELECT STUDENT.SNO,STUDENT.SNAME,STUDENT.SSEX,STUDENT.SBIRTHDAY,
+        STUDENT.SPECIALITY,STUDENT.SCLASS,STUDENT.TC,CLASS.CNAME AS SCLASSNAME
+        from STUDENT,CLASS
         <where>
+            <if test="1==1">
+                and CLASS.CNO=STUDENT.SCLASS
+            </if>
                 <if test="sname!=null and sname!=''">
                     and SNAME like concat(concat('%',#{sname}),'%')
                 </if>
@@ -17,8 +22,11 @@
         </where>
     </select>
 
-    <select id="getStudentByNo" parameterType="int" resultType="com.dgut.po.Student">
-        select * from STUDENT where sno=#{sno}
+    <select id="getStudentByNo" parameterType="int" resultType="com.dgut.po.StudentCustom">
+       SELECT STUDENT.SNO,STUDENT.SNAME,STUDENT.SSEX,STUDENT.SBIRTHDAY,
+        STUDENT.SPECIALITY,STUDENT.SCLASS,STUDENT.TC,CLASS.CNAME AS SCLASSNAME
+        from STUDENT,CLASS
+        where STUDENT.SCLASS=CLASS.CNO and sno='${value}'
     </select>
 
     <insert id="insertStudent" parameterType="com.dgut.po.Student">

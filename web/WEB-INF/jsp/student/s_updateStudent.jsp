@@ -110,28 +110,8 @@
             }
         }
 
-        function checkClassNo() {
-            var credit = $("#sclass").val();
-            var r = /^[0-9]*[1-9][0-9]*$/;
-            r.test(credit);
-            if (credit == null || credit == "") {
-                $("#ssclass").text("班号不能为空")
-            } else if (!r.test(credit)) {
-                $("#ssclass").text("班号必须是正整数");
-            }
-            else {
-                $("#ssclass").text("正确");
-                $("#ssclass").css("color", "green");
-                return true;
-            }
-            $("#ssclass").css("color", "red");
-            return false;
-        }
         function checkStudentInfo() {
             var flag = true;
-            if(!checkClassNo()){
-                flag = false;
-            }
             if(!subspeciality()){
                 flag = false;
             }
@@ -144,7 +124,10 @@
             }
             return true;
         }
-
+        function classNameChange() {
+            var sclass = $("#sClassSelect").val();
+            $("#sclass").val(sclass)
+        }
     </script>
 </head>
 <body onload="Rendering();">
@@ -172,16 +155,16 @@
                     </header>
                     <section class="article">
                         <form class="userForm" action="<%=basePath%>insertStudent.action" onsubmit="return checkStudentInfo()">
-                            <c:if test="${student.sno!=null}">
+                            <c:if test="${student.studentCustom.sno!=null}">
                                 <p>
                                     <span>学号</span>
-                                    <input disabled="disabled" value="${student.sno}"/>
-                                    <input name="sno" hidden="hidden" value="${student.sno}"/>
+                                    <input disabled="disabled" value="${student.studentCustom.sno}"/>
+                                    <input name="sno" hidden="hidden" value="${student.studentCustom.sno}"/>
                                 </p>
                             </c:if>
                             <p>
                                 <span>姓名</span>
-                                <input id="sname" name="sname" value="${student.sname}" onblur="subname()"/>
+                                <input id="sname" name="sname" value="${student.studentCustom.sname}" onblur="subname()"/>
                                 <span id="ssname"></span>
                             </p>
 
@@ -191,25 +174,35 @@
                                     <option value="m">男</option>
                                     <option value="w">女</option>
                                 </select>
-                                <input id="ssex" name="ssex" value="${student.ssex}" hidden="true"/>
+                                <input id="ssex" name="ssex" value="${student.studentCustom.ssex}" hidden="true"/>
                             </p>
                             <p>
                                 <span>出生日期</span>
 
                                 <input id="sbirthday" name="sbirthday" onclick="selectDate();"
-                                       value="<fmt:formatDate value="${student.sbirthday}" pattern="yyyy-MM-dd"/>"
+                                       value="<fmt:formatDate value="${student.studentCustom.sbirthday}" pattern="yyyy-MM-dd"/>"
                                        style="width:170px;padding:7px 10px;border:1px solid #ccc;margin-right:10px;"/>
 
                             </p>
                             <p>
                                 <span>专业</span>
-                                <input id="speciality" name="speciality" value="${student.speciality}" onblur="subspeciality()"/>
+                                <input id="speciality" name="speciality" value="${student.studentCustom.speciality}" onblur="subspeciality()"/>
                                 <span id="sspeciality"></span>
                             </p>
                             <p>
-                                <span>班号</span>
-                                <input id="sclass" name="sclass" type="number" onblur="checkClassNo()" oninput="if(value.length>2)value=value.slice(0,3)" placeholder="请输入班号(数字)" value="${student.sclass}"/>
-                                <span id="ssclass"></span>
+                                <%--<span>班号</span>--%>
+                                <%--<input id="sclass" name="sclass" type="number" onblur="checkClassNo()" oninput="if(value.length>2)value=value.slice(0,3)" placeholder="请输入班号(数字)" value="${student.sclass}"/>--%>
+                                <%--<span id="ssclass"></span>--%>
+                                    <span>班级</span>
+                                    <select id="sClassSelect" onchange="classNameChange()">
+                                        <option value="${student.studentCustom.sclass}">${student.studentCustom.sclassname}</option>
+                                        <c:forEach items="${student.classes}" var="c">
+                                            <c:if test="${c.cno!=student.studentCustom.sclass}">
+                                                <option value="${c.cno}">${c.cname}</option>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                    <input id="sclass" name="sclass" value="${student.studentCustom.sclass}" hidden="true"/>
                             </p>
                             <input type="submit" value="提交"/>
                         </form>

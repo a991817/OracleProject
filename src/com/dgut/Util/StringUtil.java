@@ -49,4 +49,20 @@ public class StringUtil {
         }
         return student;
     }
+    public static String getMaxClon(List<String> clnos){
+        int max = 0;
+        //找出最大的数
+        for(String clno:clnos){
+            clno = clno.substring(2);
+            int cnoInt = Integer.parseInt(clno);
+            if(max<cnoInt){
+                max = cnoInt;
+            }
+        }
+        String maxStr = String.valueOf(max+1);
+        maxStr = "cl"+maxStr;
+        return maxStr;
+    }
+
+
 }

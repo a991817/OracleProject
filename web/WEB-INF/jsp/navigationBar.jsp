@@ -11,5 +11,6 @@
         <li id="studentListLi"><a href="<%=basePath%>studentList.action">学生信息</a></li>
         <li id="courseListLi"><a href="<%=basePath%>courseList.action">课程信息</a></li>
         <li id="scoreListLi"><a href="<%=basePath%>scoreList.action">学生成绩</a></li>
+        <li id="classListLi"><a href="<%=basePath%>classList.action">班级信息</a></li>
         <li><a href="<%=basePath%>logout.action">退出登录</a></li>
     </ul>

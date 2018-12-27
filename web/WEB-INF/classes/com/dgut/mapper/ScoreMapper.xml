@@ -59,6 +59,10 @@
         where CNO='${value}'
     </select>
 
+    <delete id="deleteAllScoreBySno" parameterType="java.lang.String">
+        delete from SCORE where SNO='${value}'
+    </delete>
+
 
 
 

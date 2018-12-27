@@ -1,13 +1,14 @@
 package com.dgut.service.Impl;
 
 import com.dgut.po.Student;
+import com.dgut.po.StudentCustom;
 
 import java.util.List;
 
 public interface StudentService {
-    public Student getStudentByNo(int sno);
+    public StudentCustom getStudentByNo(int sno);
     //根据查询条件查询学生
-    public List<Student> getStudentList(Student studentVo);
+    public List<StudentCustom> getStudentList(Student studentVo);
     public void insertStudent(Student student);
     public void deleteStudent(int sno);
     public int updateStudent(Student student);

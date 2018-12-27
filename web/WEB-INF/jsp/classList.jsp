@@ -9,7 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>课程信息</title>
+    <title>班级信息</title>
     <link rel="icon" href="/images/dgut.jpg">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/1.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/normal.css">
@@ -23,38 +23,33 @@
     %>
     <script type="text/javascript">
         $(function () {
-            $("#scoreListLi").addClass("current");
+            $("#classListLi").addClass("current");
         });
-        function isConfirm() {
-            if (confirm("确定删除该课程信息吗？")) {
-                return true;
-            }
-            else {
-                return false;
-            }
+        function addClass() {
+            window.location.href = "updateClassPage.action";
         }
     </script>
     <%--翻页--%>
     <script type="text/javascript">
         function firstPage() {
-            window.location.href = "scoreList.action?pageNum=1&type=page";
+            window.location.href = "classList.action?pageNum=1&type=page";
         }
 
         function previousPage() {
             var currentPage = ${pager.currentPage}-1;
             if (currentPage < 1)
                 currentPage = 1;
-            window.location.href = "scoreList.action?pageNum=" + currentPage + "&type=page";
+            window.location.href = "classList.action?pageNum=" + currentPage + "&type=page";
         }
 
         function nextPage() {
             var currentPage = ${pager.currentPage}+1;
-            window.location.href = "scoreList.action?pageNum=" + currentPage + "&type=page";
+            window.location.href = "classList.action?pageNum=" + currentPage + "&type=page";
         }
 
         function lastPage() {
             var totalPage = ${pager.totalPage};
-            window.location.href = "scoreList.action?pageNum=" + totalPage + "&type=page";
+            window.location.href = "classList.action?pageNum=" + totalPage + "&type=page";
         }
     </script>
 </head>
@@ -77,46 +72,37 @@
             <div class="column_2 ">
                 <article class="mainContent">
                     <header class="contentNav">
-                        <h1>查询学生成绩</h1>
+                        <h1>班级信息</h1>
                     </header>
                     <section class="article">
-                        <form action="<%=basePath%>scoreList.action?type=query">
-                            课程名称：
-                            <input type="text" name="cname" id="cname" style="width:120px">
-                            学生姓名：
-                            <input type="text" name="sname" id="sname" style="width:120px">
-                            <input type="submit" value="查询">
-                        </form>
+                        <input type="button" value="添加班级" onclick="addClass()"/>
+                        <%--<form action="<%=basePath%>scoreList.action?type=query">--%>
+                            <%--课程名称：--%>
+                            <%--<input type="text" name="cname" id="cname" style="width:120px">--%>
+                            <%--学生姓名：--%>
+                            <%--<input type="text" name="sname" id="sname" style="width:120px">--%>
+                            <%--<input type="submit" value="查询">--%>
+                        <%--</form>--%>
+                            <form action="<%=basePath%>classList.action?type=query">
+                                班级名称:
+                                <input type="text" name="cname" id="cname" style="width:120px">
+                                <input type="submit" value="查询">
+                            </form>
                         <c:if test="${pager.totalRecord!=0}">
                             <table class="InfoTable">
                                 <tr>
-                                    <td>课程名称</td>
-                                    <td>学号</td>
-                                    <td>学生姓名</td>
-                                    <td>分数</td>
+                                    <td>班级名称</td>
+                                    <td>班级人数</td>
                                     <td>操作</td>
                                 </tr>
-                                <c:forEach var="sc" items="${pager.dataList}">
+                                <c:forEach var="c" items="${pager.dataList}">
                                     <tr>
-                                        <td>${sc.cname}</td>
-                                        <td>${sc.sno}</td>
-                                        <td>${sc.sname}</td>
+                                        <td>${c.cname}</td>
+                                        <td>${c.numbers}</td>
+
                                         <td>
-                                            <c:if test="${sc.score>0}">
-                                                ${sc.score}
-                                            </c:if>
-                                            <c:if test="${sc.score==0}">
-                                                未打分
-                                            </c:if>
-                                        </td>
-                                        <td>
-                                            <a href="<%=basePath%>updateScorePage.action?cno=${sc.cno}&sno=${sc.sno}">
-                                                <c:if test="${sc.score>0}">
+                                            <a href="<%=basePath%>updateClassPage.action?cno=${c.cno}">
                                                     修改
-                                                </c:if>
-                                                <c:if test="${sc.score==0}">
-                                                    打分
-                                                </c:if>
                                             </a>
                                         </td>
                                     </tr>

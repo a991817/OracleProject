@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dgut.mapper.ClassMapper" >
+    <select id="getAllClass" resultType="com.dgut.po.Class" parameterType="com.dgut.po.Class">
+        select * from CLASS
+        <where>
+            <if test="cname!=null and cname!=''">
+                and CNAME like concat(concat('%',#{cname}),'%')
+            </if>
+        </where>
+    </select>
+
+    <update id="updateNumbers" parameterType="java.lang.String">
+        update CLASS SET NUMBERS=(SELECT count(*)
+        from CLASS ,STUDENT
+        where CLASS.CNO=STUDENT.SCLASS and CNO='${value}')
+        where CNO='${value}'
+
+    </update>
+
+    <insert id="insertAClass" parameterType="com.dgut.po.Class">
+        insert into CLASS(CNO,CNAME) VALUES('${cno}','${cname}')
+    </insert>
+
+    <select id="getAllCno" resultType="java.lang.String">
+        select cno from class
+    </select>
+
+    <select id="getClassByCno" parameterType="java.lang.String" resultType="com.dgut.po.Class">
+        select * from CLASS
+        where CNO='${value}'
+    </select>
+
+    <update id="updateClassName" parameterType="com.dgut.po.Class">
+        update CLASS set CNAME='${cname}' where CNO='${cno}'
+    </update>
+
+</mapper>
